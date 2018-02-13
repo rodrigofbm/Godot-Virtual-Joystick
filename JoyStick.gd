@@ -5,7 +5,7 @@ extends Node2D
 
 onready var bigCircle = get_node("BigCircle")
 onready var smallCircle = get_node("SmallCircle")
-onready var Player = get_node("../").get_node("Ship")
+onready var Player = get_node("../").get_node("Player")
 
 var playerVel = 250
 
