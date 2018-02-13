@@ -51,6 +51,7 @@ func _input(event):
 func _process(delta):
 		var playerPosG = Player.get_global_position()
 		#normalized() reduz o valor do modulo(magnitude) do vetor para 1 mantendo a direcao e sentido
+		#normalized() reduces the magnitude of the vector to 1 while maintaining the direction
 		Player.set_global_position(playerPosG + smallCirclePos.normalized() * playerVel * delta)
 
 #=========== Return event input states ===========
