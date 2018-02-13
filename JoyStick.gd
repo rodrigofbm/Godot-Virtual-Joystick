@@ -7,10 +7,6 @@ onready var bigCircle = get_node("BigCircle")
 onready var smallCircle = get_node("SmallCircle")
 onready var Player = get_node("../").get_node("Player")
 
-var screenW= 1024
-var screenH = 620
-var playerW = 40
-
 var playerVel = 250
 
 var resetPosCircle
