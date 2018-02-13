@@ -1,11 +1,11 @@
 #Author: Rodrigo Torres
-#Version: 1.1
+#Version: 1.2
 #For Godot 3.0
 extends Node2D
 
 onready var bigCircle = get_node("BigCircle")
 onready var smallCircle = get_node("SmallCircle")
-onready var Player = get_node("../").get_node("Player")
+onready var Player = get_node("../").get_node("Ship")
 
 var playerVel = 250
 
@@ -13,6 +13,7 @@ var resetPosCircle
 var pressed = 0
 var halfBigCircleSize
 var isDrag
+var thereIsEventInput = false
 
 var smallCirclePos
 
@@ -22,10 +23,14 @@ func _ready():
 
 func _input(event):
 	
+	if event:
+		thereIsEventInput = true
+	
 	var isReleased = _on_Released(event) #hold the return
 	_on_Pressed(event) #verify every time
 	isDrag = _on_Drag(event) #hold the return
 	
+		
 	var eventPosx = event.position.x
 	var eventPosy = event.position.y
 	
@@ -54,10 +59,10 @@ func _process(delta):
 		var playerPosG = Player.get_global_position()
 		#normalized() reduz o valor do módulo(magnitude) do vetor para 1 mantendo a direcao e sentido
 		#normalized() reduces the magnitude of the vector to 1 while maintaining the direction
-		Player.set_global_position(playerPosG + smallCirclePos.normalized() * playerVel * delta)
+		if thereIsEventInput:
+			Player.set_global_position(playerPosG + smallCirclePos.normalized() * playerVel * delta)
 
 #=========== Return event input states ===========
-
 func _on_Drag(event):
 	if event is InputEventMouseMotion:
 		return true
@@ -69,6 +74,7 @@ func _on_Pressed(event):
 	var bigCircPosy =  bigCircle.get_global_position().y
 	var eventPosx = event.position.x
 	var eventPosy = event.position.y
+	
 	#calculating distance between (two points) event and bigCircle
 	var distCirc_eventPos = sqrt( pow((eventPosx - bigCircPosx), 2) + pow((bigCircPosy - eventPosy), 2) )
 	
