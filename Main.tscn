@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://JoyStick.gd" type="Script" id=1]
+[ext_resource path="res://big_circle.png" type="Texture" id=2]
+[ext_resource path="res://small_circle.png" type="Texture" id=3]
+[ext_resource path="res://Player.tscn" type="PackedScene" id=4]
+
+[node name="Main" type="Node2D" index="0"]
+
+[node name="JoyStick" type="Node2D" parent="." index="0"]
+
+editor/display_folded = true
+position = Vector2( 174.296, 422.412 )
+script = ExtResource( 1 )
+_sections_unfolded = [ "Theme", "Transform" ]
+
+[node name="BigCircle" type="Sprite" parent="JoyStick" index="0"]
+
+texture = ExtResource( 2 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 128 )
+_sections_unfolded = [ "Region", "Transform" ]
+
+[node name="SmallCircle" type="Sprite" parent="JoyStick" index="1"]
+
+texture = ExtResource( 3 )
+_sections_unfolded = [ "Offset", "Transform" ]
+
+[node name="Player" parent="." index="1" instance=ExtResource( 4 )]
+
+position = Vector2( 431.687, 352.191 )
+
+
