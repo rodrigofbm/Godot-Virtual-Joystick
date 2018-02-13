@@ -1,5 +1,5 @@
 #Author: Rodrigo Torres
-#Version: 1.0
+#Version: 1.1
 #For Godot 3.0
 extends Node2D
 
@@ -29,7 +29,9 @@ func _input(event):
 	var eventPosx = event.position.x
 	var eventPosy = event.position.y
 	
+	
 	smallCirclePos = smallCircle.get_position()
+		
 	var smallCirclex = smallCirclePos.x
 	var smallCircley = smallCirclePos.y
 	
@@ -50,7 +52,8 @@ func _input(event):
 
 func _process(delta):
 		var playerPosG = Player.get_global_position()
-		#normalized() reduz o valor do modulo(magnitude) do vetor para 1 mantendo a direcao e sentido
+		#normalized() reduz o valor do módulo(magnitude) do vetor para 1 mantendo a direcao e sentido
+		#normalized() reduces the magnitude of the vector to 1 while maintaining the direction
 		Player.set_global_position(playerPosG + smallCirclePos.normalized() * playerVel * delta)
 
 #=========== Return event input states ===========
@@ -62,10 +65,19 @@ func _on_Drag(event):
 		return true
 
 func _on_Pressed(event):
+	var bigCircPosx =  bigCircle.get_global_position().x
+	var bigCircPosy =  bigCircle.get_global_position().y
+	var eventPosx = event.position.x
+	var eventPosy = event.position.y
+	#calculating distance between (two points) event and bigCircle
+	var distCirc_eventPos = sqrt( pow((eventPosx - bigCircPosx), 2) + pow((bigCircPosy - eventPosy), 2) )
+	
 	if event is InputEventMouseButton:
-		pressed = 1
+		if distCirc_eventPos <= 128/2:
+			pressed = 1
 	elif event is InputEventScreenTouch:
-		pressed = 1
+		if distCirc_eventPos <= 128/2:
+			pressed = 1
 
 func _on_Released(event):
 	if event is InputEventScreenTouch:
