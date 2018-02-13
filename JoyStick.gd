@@ -11,13 +11,13 @@ var playerVel = 250
 
 var resetPosCircle
 var pressed = 0
-var bigCircleSize
+var halfBigCircleSize
 var isDrag
 
 var smallCirclePos
 
 func _ready():
-	bigCircleSize = 128
+	halfBigCircleSize = 181/2
 	resetPosCircle = smallCircle.get_global_position()
 
 func _input(event):
@@ -40,7 +40,7 @@ func _input(event):
 	
 	if isDrag and pressed == 1:
 		smallCircle.set_global_position(event.position)
-		if smallCirDist > bigCircleSize/2:
+		if smallCirDist > halfBigCircleSize:
 			smallCircle.set_position(dirBigCir_dirEnvt.normalized() * 65)
 		else:
 			smallCircle.set_global_position(event.position)
@@ -52,11 +52,7 @@ func _input(event):
 
 func _process(delta):
 		var playerPosG = Player.get_global_position()
-<<<<<<< HEAD
 		#normalized() reduz o valor do módulo(magnitude) do vetor para 1 mantendo a direcao e sentido
-=======
-		#normalized() reduz o valor do modulo(magnitude) do vetor para 1 mantendo a direcao e sentido
->>>>>>> 7b1e3a1d057ea9c72bd864ff2b9f779cf36ae7c8
 		#normalized() reduces the magnitude of the vector to 1 while maintaining the direction
 		Player.set_global_position(playerPosG + smallCirclePos.normalized() * playerVel * delta)
 
@@ -77,10 +73,10 @@ func _on_Pressed(event):
 	var distCirc_eventPos = sqrt( pow((eventPosx - bigCircPosx), 2) + pow((bigCircPosy - eventPosy), 2) )
 	
 	if event is InputEventMouseButton:
-		if distCirc_eventPos <= 128/2:
+		if distCirc_eventPos <= halfBigCircleSize:
 			pressed = 1
 	elif event is InputEventScreenTouch:
-		if distCirc_eventPos <= 128/2:
+		if distCirc_eventPos <= halfBigCircleSize:
 			pressed = 1
 
 func _on_Released(event):
