@@ -45,7 +45,7 @@ func _input(event):
 	
 	if isDrag and pressed == 1:
 		smallCircle.set_global_position(event.position)
-		if smallCirDist > halfBigCircleSize:
+		if smallCirDist > halfBigCircleSize/1.5:
 			smallCircle.set_position(dirBigCir_dirEnvt.normalized() * 64)
 		else:
 			smallCircle.set_global_position(event.position)
