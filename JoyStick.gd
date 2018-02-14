@@ -1,5 +1,5 @@
 #Author: Rodrigo Torres
-#Version: 1.2
+#Version: 1.0.5
 #For Godot 3.0
 extends Node2D
 
