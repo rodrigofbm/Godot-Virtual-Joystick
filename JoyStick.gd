@@ -5,7 +5,7 @@ extends Node2D
 
 onready var bigCircle = get_node("BigCircle")
 onready var smallCircle = get_node("SmallCircle")
-onready var Player = get_node("../").get_node("Ship")
+onready var Player = get_node("../").get_node("Player")
 
 var playerVel = 250
 
@@ -46,7 +46,7 @@ func _input(event):
 	if isDrag and pressed == 1:
 		smallCircle.set_global_position(event.position)
 		if smallCirDist > halfBigCircleSize:
-			smallCircle.set_position(dirBigCir_dirEnvt.normalized() * 91)
+			smallCircle.set_position(dirBigCir_dirEnvt.normalized() * 64)
 		else:
 			smallCircle.set_global_position(event.position)
 			

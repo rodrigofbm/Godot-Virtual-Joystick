@@ -9,7 +9,6 @@
 
 [node name="JoyStick" type="Node2D" parent="." index="0"]
 
-editor/display_folded = true
 position = Vector2( 174.296, 422.412 )
 script = ExtResource( 1 )
 _sections_unfolded = [ "Theme", "Transform" ]
@@ -17,9 +16,7 @@ _sections_unfolded = [ "Theme", "Transform" ]
 [node name="BigCircle" type="Sprite" parent="JoyStick" index="0"]
 
 texture = ExtResource( 2 )
-region_enabled = true
-region_rect = Rect2( 0, 0, 128, 128 )
-_sections_unfolded = [ "Region", "Transform" ]
+region_rect = Rect2( 0, 0, 170, 170 )
 
 [node name="SmallCircle" type="Sprite" parent="JoyStick" index="1"]
 
