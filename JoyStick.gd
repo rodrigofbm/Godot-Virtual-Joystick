@@ -1,92 +1,92 @@
-#Author: Rodrigo Torres
-#Version: 1.0.5
-#For Godot 3.x
 extends Node2D
 
-onready var bigCircle = get_node("BigCircle")
-onready var smallCircle = get_node("SmallCircle")
-onready var Player = get_node("../").get_node("Player")
+signal move
 
-var playerVel = 250
+onready var bigCircle = $BigCircle
+onready var smallCircle = $SmallCircle
 
 var resetPosCircle
 var pressed = 0
 var halfBigCircleSize
-var isDrag
 var thereIsEventInput = false
-
-var smallCirclePos
+var vectorToEmit
+var bigCircPos
+var distance
 
 func _ready():
-	halfBigCircleSize = 181/2
-	resetPosCircle = smallCircle.get_global_position()
+	halfBigCircleSize = bigCircle.texture.get_size().x / 2
+	updateCachedCirclesPositions()
 
 func _input(event):
+	if event is InputEventKey:
+		return
 	
-	if event:
-		thereIsEventInput = true
+	_on_Pressed(event)
 	
-	var isReleased = _on_Released(event) #hold the return
-	_on_Pressed(event) #verify every time
-	isDrag = _on_Drag(event) #hold the return
-	
-		
-	var eventPosx = event.position.x
-	var eventPosy = event.position.y
-	
-	
-	smallCirclePos = smallCircle.get_position()
-		
-	var smallCirclex = smallCirclePos.x
-	var smallCircley = smallCirclePos.y
-	
-	var smallCirDist = sqrt( pow(smallCirclex, 2) + pow(smallCircley, 2) )
-	var dirBigCir_dirEnvt = event.position - bigCircle.get_global_position()
-	
-	if isDrag and pressed == 1:
-		smallCircle.set_global_position(event.position)
-		if smallCirDist > halfBigCircleSize/1.5:
-			smallCircle.set_position(dirBigCir_dirEnvt.normalized() * 64)
+	if event is InputEventScreenTouch:
+		toggleVisible(event.pressed)
+		setSelfPosition(event.position)
+		updateCachedCirclesPositions()
+		if not event.pressed:
+			emit_signal_move(Vector2(0, 0))
+			return
+
+	if getIsDrag(event) and pressed == 1:
+		var dirBigCir_dirEnvt = event.position - bigCircle.get_global_position()
+		distance = getDistance(dirBigCir_dirEnvt.x, 0, dirBigCir_dirEnvt.y, 0)
+		if distance > halfBigCircleSize:
+			smallCircle.set_position(dirBigCir_dirEnvt.normalized() * halfBigCircleSize)
 		else:
 			smallCircle.set_global_position(event.position)
 			
-	if isReleased:
+	if isReleased(event):
 		pressed = 0
 		smallCircle.set_global_position(resetPosCircle)
 
+	vectorToEmit = smallCircle.get_position()
+	thereIsEventInput = true if event else false
 
 func _process(delta):
-		var playerPosG = Player.get_global_position()
-		#normalized() reduz o valor do módulo(magnitude) do vetor para 1 mantendo a direcao e sentido
 		#normalized() reduces the magnitude of the vector to 1 while maintaining the direction
-		if thereIsEventInput:
-			Player.set_global_position(playerPosG + smallCirclePos.normalized() * playerVel * delta)
+		if thereIsEventInput and vectorToEmit:
+			emit_signal_move(vectorToEmit / halfBigCircleSize)
 
-#=========== Return event input states ===========
-func _on_Drag(event):
-	if event is InputEventMouseMotion:
-		return true
-	elif event is InputEventScreenDrag:
+func toggleVisible(value):
+	self.visible = value
+
+func setSelfPosition(position):
+	self.position = position
+	smallCircle.set_global_position(position)
+
+func updateCachedCirclesPositions():
+	resetPosCircle = smallCircle.get_global_position()
+	bigCircPos = bigCircle.get_global_position()
+
+func easing(t):
+	return t*t*t
+
+func emit_signal_move(value):
+	emit_signal('move', easing(value))
+
+func getIsDrag(event):
+	if event is InputEventMouseMotion or event is InputEventScreenDrag:
 		return true
 
 func _on_Pressed(event):
-	var bigCircPosx =  bigCircle.get_global_position().x
-	var bigCircPosy =  bigCircle.get_global_position().y
-	var eventPosx = event.position.x
-	var eventPosy = event.position.y
+	var eventPos = event.get_position()
+
+	if not eventPos or not eventPos.x or not eventPos.y:
+		return
 	
-	#calculating distance between (two points) event and bigCircle
-	var distCirc_eventPos = sqrt( pow((eventPosx - bigCircPosx), 2) + pow((bigCircPosy - eventPosy), 2) )
+	var distCirc_eventPos = getDistance(eventPos.x, bigCircPos.x, bigCircPos.y, eventPos.y)
 	
-	if event is InputEventMouseButton:
-		if distCirc_eventPos <= halfBigCircleSize:
-			pressed = 1
-	elif event is InputEventScreenTouch:
+	if event is InputEventMouseButton or event is InputEventScreenTouch:
 		if distCirc_eventPos <= halfBigCircleSize:
 			pressed = 1
 
-func _on_Released(event):
-	if event is InputEventScreenTouch:
+func isReleased(event):
+	if event is InputEventScreenTouch or event is InputEventMouseButton:
 		return !event.pressed
-	elif event is InputEventMouseButton:
-		return !event.pressed
+
+func getDistance(x1, x2, y1, y2):
+	return sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2))
