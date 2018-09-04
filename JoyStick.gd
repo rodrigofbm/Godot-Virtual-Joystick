@@ -1,3 +1,6 @@
+#Author: Rodrigo Torres
+#Version: 1.0.5
+#For Godot 3.x
 extends Node2D
 
 signal move
