@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://JoyStick.gd" type="Script" id=1]
 [ext_resource path="res://big_circle.png" type="Texture" id=2]
 [ext_resource path="res://small_circle.png" type="Texture" id=3]
 [ext_resource path="res://Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Player.gd" type="Script" id=5]
 
 [node name="Main" type="Node2D" index="0"]
 
@@ -26,5 +27,7 @@ _sections_unfolded = [ "Offset", "Transform" ]
 [node name="Player" parent="." index="1" instance=ExtResource( 4 )]
 
 position = Vector2( 431.687, 352.191 )
+script = ExtResource( 5 )
+speed = 400
 
 
