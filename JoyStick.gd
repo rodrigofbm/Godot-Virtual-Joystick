@@ -1,3 +1,6 @@
+#Author: Rodrigo Torres
+#Version: 1.1.0
+#For Godot 3.x
 # Module used to control a joystick made of two circles.
 # The position of the joystick is fixed if controlled by the mouse.
 # It's under the finger if controlled by touch
